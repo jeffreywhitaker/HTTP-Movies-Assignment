@@ -22,19 +22,7 @@ const MovieCard = props => {
           {star}
         </div>
       ))}
-      <button
-          onClick={() => props.history.push(`/update-movie/${props.movie.id}`)}
-          className="md-button"
-      >
-        Edit Movie Details
-    </button>
     </div>
-    <Route
-        path="/update-movie/:id"
-        render={props => {
-          return <MovieUpdateForm {...props} movie={props.movie} />
-      }}
-      />
     </>
   );
 };

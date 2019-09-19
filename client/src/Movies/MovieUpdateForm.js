@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const initialItem = {
-  name: '',
-  price: '',
-  imageUrl: '',
-  description: '',
-  shipping: ''
+  title: '',
+  director: '',
+  metascore: ''
 };
 
-const MovieUpdateForm = props => {
+const UpdateForm = props => {
   const [item, setItem] = useState(initialItem);
 
   const { match, items } = props;
@@ -38,10 +36,10 @@ const MovieUpdateForm = props => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .put(`http://localhost:5000/movies/${item.id}`, item)
+      .put(`http://localhost:3333/items/${item.id}`, item)
       .then(res => {
         props.updateItems(res.data);
-        props.history.push(`/movies/${item.id}`);
+        props.history.push(`/item-list/${item.id}`);
         setItem(initialItem);
       })
       .catch(err => console.log(err.response));
@@ -56,12 +54,12 @@ const MovieUpdateForm = props => {
           name="title"
           onChange={changeHandler}
           placeholder="title"
-          value={item.tile}
+          value={item.title}
         />
         <div className="baseline" />
 
         <input
-          type="number"
+          type="text"
           name="director"
           onChange={changeHandler}
           placeholder="director"
@@ -71,10 +69,10 @@ const MovieUpdateForm = props => {
 
         <input
           type="string"
-          name="metascore"
+          name="metadata"
           onChange={changeHandler}
-          placeholder="metascore"
-          value={item.metascore}
+          placeholder="metadata"
+          value={item.metadata}
         />
         <div className="baseline" />
 
@@ -93,4 +91,4 @@ const MovieUpdateForm = props => {
   );
 };
 
-export default MovieUpdateForm;
+export default UpdateForm;
