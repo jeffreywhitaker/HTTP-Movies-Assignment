@@ -16,37 +16,40 @@ const UpdateForm = props => {
     const itemToUpdate = items.find(item => `${item.id}` === id);
     if (itemToUpdate) {
       console.log(itemToUpdate);
+      itemToUpdate.starString = itemToUpdate.stars.join(', ')
       setItem(itemToUpdate);
     }
-  }, [match, items]);
+  }, [items]);
 
   const changeHandler = ev => {
     ev.persist();
     let value = ev.target.value;
-    // if (ev.target.name === 'price') {
-    //   value = parseInt(value, 10);
-    // }
-
     setItem({
       ...item,
       [ev.target.name]: value
     });
   };
 
+  const textStyle = {
+    width: '800px'
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .put(`http://localhost:3333/items/${item.id}`, item)
+      .put(`http://localhost:5000/api/movies/${item.id}`, {
+          ...item,
+          stars: item.starString.split(', ')
+      })
       .then(res => {
         props.updateItems(res.data);
-        props.history.push(`/item-list/${item.id}`);
-        setItem(initialItem);
+        props.history.push(`/movies/${item.id}`);
       })
       .catch(err => console.log(err.response));
   };
 
   return (
-    <div>
+    <div className="movie-card">
       <h2>Update Item</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -69,19 +72,20 @@ const UpdateForm = props => {
 
         <input
           type="string"
-          name="metadata"
+          name="metascore"
           onChange={changeHandler}
-          placeholder="metadata"
-          value={item.metadata}
+          placeholder="metascore"
+          value={item.metascore}
         />
         <div className="baseline" />
 
         <input
           type="string"
-          name="stars"
+          name="starString"
+          style={textStyle}
           onChange={changeHandler}
           placeholder="stars"
-          value={item.stars}
+          value={item.starString}
         />
         <div className="baseline" />
 
